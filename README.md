@@ -38,7 +38,7 @@ might have been shut down due to someone else outbidding you!
 If you're here, you probably know what you're doing!
 
 Just know that you'll need nvidia docker support in order to push gpus to a docker container,
-which is only available on linux. The dockerhub repo for this project is at []`trevorwieland/deepspeed`](https://hub.docker.com/r/trevorwieland/deepspeed).
+which is only available on linux. The dockerhub repo for this project is at [trevorwieland/deepspeed](https://hub.docker.com/r/trevorwieland/deepspeed).
 Currently the only available tag is `:runpod`, but if there is a usecase for other tags we will add them.
 
 You can also build your own by cloning this repo and modifying the Dockerfile and start script to suit
@@ -56,8 +56,8 @@ and easy to use.
 |-------------------|------|---------|----------------|
 | Direct            | 4    | 1654.14 | 80.6           |
 | Torch Distributed | 1    |         |                |
-| Torch Distributed | 2    |         |                |
-| Torch Distributed | 3    |         |                |
+| Torch Distributed | 2    | 1263.44 | 105.5          |
+| Torch Distributed | 3    | 881.25  | 151.3          |
 | Torch Distributed | 4    | 712.35  | 187.2          |
 | Deepspeed Zero2   | 1    |         |                |
 | Deepspeed Zero2   | 2    |         |                |
