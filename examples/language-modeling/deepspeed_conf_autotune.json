@@ -1,7 +1,7 @@
 {
   "train_micro_batch_size_per_gpu": "auto",
   "fp16": {
-    "enabled": true
+    "enabled": false
   },
   "autotuning": {
     "enabled": true,
