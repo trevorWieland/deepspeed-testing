@@ -1,0 +1,8 @@
+transformers[deepspeed]
+datasets
+scikit-learn
+protobuf
+sentencepiece
+accelerate
+sacrebleu
+sacremoses
