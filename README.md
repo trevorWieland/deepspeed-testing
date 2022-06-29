@@ -48,25 +48,21 @@ your needs!
 This section is most relevant for the sugoi translation enhancement project, but for the
 sake of this benchmark, the translation is instead EN->VI translation using the iwslt2015-en-vi
 dataset on huggingface. This is because this dataset was readily available, relatively small size,
-and easy to use.
+and easy to use. The model used in this case was t5-small.
 
 ### Results
 
 | Run Kind          | #GPU | Runtime | Samples/Second |
 |-------------------|------|---------|----------------|
 | Direct            | 4    | 1654.14 | 80.6           |
-| Torch Distributed | 1    |         |                |
+| Torch Distributed | 1    | 2462.47 | 54.1           |
 | Torch Distributed | 2    | 1263.44 | 105.5          |
 | Torch Distributed | 3    | 881.25  | 151.3          |
 | Torch Distributed | 4    | 712.35  | 187.2          |
-| Deepspeed Zero2   | 1    |         |                |
-| Deepspeed Zero2   | 2    |         |                |
-| Deepspeed Zero2   | 3    |         |                |
-| Deepspeed Zero2   | 4    |         |                |
-| Deepspeed Zero3   | 1    |         |                |
-| Deepspeed Zero3   | 2    |         |                |
-| Deepspeed Zero3   | 3    |         |                |
-| Deepspeed Zero3   | 4    |         |                |
+| Deepspeed         | 1    | 2519.35 | 52.9           |
+| Deepspeed         | 2    | 1398.33 | 95.3           |
+| Deepspeed         | 3    | 929.69  | 143.4          |
+| Deepspeed         | 4    | 710.81  | 187.6          |
 
 ### Commands
 If using the docker container, make sure the following commands are run from the `workspace` folder.
@@ -93,15 +89,11 @@ The command to run using distributed scheduling on a set `NUM_GPU` is as follows
 The command to run using deepspeed on a set `NUM_GPU` is as follows:
 
     deepspeed --num_gpus={NUM_GPU} transformers/examples/pytorch/translation/run_translation.py \
-    --deepspeed transformers/tests/deepspeed/ds_config_zero2.json \
     --model_name_or_path t5-small --per_device_train_batch_size 8 \
     --output_dir deepspeed-testing/examples/language-modeling/output/ \
     --overwrite_output_dir --fp16 --do_train --num_train_epochs 1 \
     --dataset_name mt_eng_vietnamese --dataset_config "iwslt2015-en-vi" \
     --source_lang en --target_lang vi --source_prefix "translate English to Vietnamese: "
-
-For deepspeed, both the built in zero2 and zero3 files were used for the benchmark, though a custom
-optimized file would be great to have to see if it can improve further.
 
 The batch size was kept constant across all three runs, however with some additional tinkering with deepspeed,
 the batch size should be able to increase, leading to better performance.
@@ -111,9 +103,10 @@ the batch size should be able to increase, leading to better performance.
 Test deepspeed's capabilities in doing CLM, because thats what the main tutorial had it doing.
 Unfortunately, there seems to be an issue with deepspeed and gpt models, as I have not been
 able to get it working a single time due to a `__flops__` [attribute missing error](https://github.com/microsoft/DeepSpeed/issues/2046).
-(This wasn't posted by me, but I'm having the same issue)
+(This wasn't posted by me, but I'm having the same issue). The specific model used in this
+case was sshleifer/tiny-gpt2, though I tried several similar models trying to get deepspeed to work.
 
-Directly using huggingface training, as well as torch distributed has worked however, so I'll include
+Direct training, as well as torch distributed has worked however, so I'll include
 the time for those tests to run.
 
 ### Results
@@ -125,14 +118,6 @@ the time for those tests to run.
 | Torch Distributed | 2    | 20.867  | 111.085        |
 | Torch Distributed | 3    | 16.8644 | 137.449        |
 | Torch Distributed | 4    | 13.659  | 169.69         |
-| Deepspeed Zero2   | 1    | N/A     | N/A            |
-| Deepspeed Zero2   | 2    | N/A     | N/A            |
-| Deepspeed Zero2   | 3    | N/A     | N/A            |
-| Deepspeed Zero2   | 4    | N/A     | N/A            |
-| Deepspeed Zero3   | 1    | N/A     | N/A            |
-| Deepspeed Zero3   | 2    | N/A     | N/A            |
-| Deepspeed Zero3   | 3    | N/A     | N/A            |
-| Deepspeed Zero3   | 4    | N/A     | N/A            |
 
 ### Commands
 If using the docker container, make sure the following commands are run from the `workspace` folder.
