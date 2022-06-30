@@ -7,3 +7,4 @@ sacrebleu
 sacremoses
 wandb
 psutil
+deepspeed
